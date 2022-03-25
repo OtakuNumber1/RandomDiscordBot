@@ -9,8 +9,64 @@ client.once('ready', () =>{
    console.log("Servus meine Prinzen!");
    const guildid = process.env.GUILD_ID;
    const guild = client.guilds.cache.get(guildid);
-    
+    let commands;
+
+    if(guild){
+        commands = guild.commands;
+    }else{
+        commands = client.application?.commands;
+    }
+
+    commands?.create({
+        name: 'servas',
+        description: 'Test Command vum WokiBot'
+    })
+
+    commands?.create({
+        name: 'präsentier',
+        description: 'POV: Du bist mid deina Präsi fertig'
+    })
 });
+
+client.on('interactionCreate', (interaction) => {
+
+    if (!interaction.isCommand()) {
+      return
+    }
+    const { commandName, options } = interaction
+    if (commandName === 'test') {
+      
+        interaction.reply({
+        content: "WOKI BOT",
+        ephemeral: false 
+        
+      })
+    }
+
+    if(commandName === 'servas'){
+      
+        
+        var random = Math.floor(Math.random() * 11);
+        var satz = wokisaetze[random];
+
+        interaction.reply({
+            ephemeral: false,
+            content: satz 
+        })
+    }
+    if(commandName === 'präsentier'){
+        
+        interaction.reply({
+            ephemeral: false,
+            content: "hmmmmmm" 
+        })
+
+        const channel = client.channels.cache.get(interaction.channelId)       
+        setTimeout(() => { channel.send("hmhm hmhmhm hmmm hmmmmmm...");}, 3000);
+        setTimeout(() => { channel.send("is nd bes gmant, oba des wor kacke!")}, 6000);
+    }
+  })
+
 
 client.on('messageCreate', (message) =>{
     if(message.content === "." && message.channelId == 948874797767594034){
@@ -51,17 +107,7 @@ client.on('messageCreate', (message) =>{
         }).then(() => {message.reply(satz);
         });
     }
-    if(message.content === "Traktor"){
-        message.reply("SPONSIIIII!!!111!!");
-    }
-    if(message.content === "Servus Woki!"){
-        var random = Math.floor(Math.random() * 11);
-        if(message.content === "A paprika in Ungarn kost 2 Cent, goi" ){
-            
-        }else{
-            message.reply(wokisaetze[random])
-        }
-    }
+
     if(message.content.includes("Schau moi da")){
         message.reply("Schiacha Hund")
     }
@@ -71,6 +117,7 @@ client.on('messageCreate', (message) =>{
         }
         message.channel.send("https://cdn.discordapp.com/attachments/626698387017826304/951416600001667132/unknown.png");
     }
+
 });
 
 
